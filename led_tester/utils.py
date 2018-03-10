@@ -4,11 +4,19 @@ Created on 9 Mar 2018
 @author: gilliandonlon
 '''
 import pytest
-def parseFile(input):
+import urllib.request
+import re
 
-    if input.startswith('http'):
+def parseFile(input):
         # use requests
-        pass
+    if input.startswith('http'):
+        N, instructions = None, []
+        req = urllib.request.urlopen(input)
+        buffer = req.read().decode('utf-8')
+        N = int(buffer.split('\n')[0])
+        for line in buffer.split('\n')[1:]:
+            instructions.append(line)
+        return N, instructions
     else:
         # read from disk
         N, instructions = None, []
@@ -16,8 +24,10 @@ def parseFile(input):
             N = int(f.readline())
             for line in f.readlines():
                 instructions.append(line)
-        # haven't written the code yet...
         return N, instructions
     return
+
+
+
 
         
